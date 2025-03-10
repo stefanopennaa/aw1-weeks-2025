@@ -1,6 +1,6 @@
 import sqlite from "sqlite3"; // Importo il modulo sqlite3 per la gestione dei database sqlite
 
-const db = new sqlite.Database("questions.sqlite", (err) => {if (err) throw err;}); // Apertura del database
+const db = new sqlite.Database("questions.sqlite", (err) => {if (err) throw err;}); // Apertura del database "questions.sqlite"
 
 let sql = "SELECT * FROM answer"; // Query sql da eseguire
 
