@@ -35,7 +35,7 @@ export const getQuestion = (id) => {
 export const addQuestion = (question) => {
   return new Promise((resolve, reject) => {
     const sql = 'INSERT INTO question(text, authorId, date) VALUES (?,?,?)';
-    db.run(sql, [question.text, question.userId, question.date.toISOString()], function(err) {
+    db.run(sql, [question.text, question.userId, question.date], function(err) {
       if (err)
         reject(err);
       else 
@@ -49,7 +49,7 @@ export const addQuestion = (question) => {
 // get all the answer of a given question
 export const listAnswersOf = (questionId) => {
   return new Promise ((resolve, reject) => {
-    const sql = "SELECT answer.*, user.email FROM answer JOIN user ON answer.authorId = user.id WHERE answer.questionId = ?";
+    const sql = 'SELECT answer.*, user.email FROM answer JOIN user ON answer.authorId = user.id WHERE answer.questionId = ?';
     db.all(sql, [questionId], (err, rows) => {
       if (err) {
         reject(err);
@@ -65,7 +65,7 @@ export const listAnswersOf = (questionId) => {
 export const addAnswer = (answer, questionId) => {
   return new Promise((resolve, reject) => {
     const sql = 'INSERT INTO answer(text, authorId, date, score, questionId) VALUES (?, ?, ?, ?, ?)';
-    db.run(sql, [answer.text, answer.userId, answer.date.toISOString(), answer.score, questionId], function (err) {
+    db.run(sql, [answer.text, answer.userId, answer.date, answer.score, questionId], function (err) {
       if (err)
         reject(err);
       else
@@ -83,7 +83,7 @@ export const updateAnswer = (answer) => {
 export const voteAnswer = (answerId, vote) => {
   return new Promise((resolve, reject) => {
     const sql = 'UPDATE answer SET score = score + ? WHERE id= ?';
-    const delta = value === 'up' ? 1 : -1;
+    const delta = vote === 'up' ? 1 : -1;
     db.run(sql, [delta, answerId], function(err) {
       if (err)
         reject(err);
