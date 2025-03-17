@@ -23,7 +23,7 @@ export const getQuestion = (id) => {
       if (err) {
         reject(err);
       } else if (row === undefined) {
-        resolve('Question not available, check the inserted id.');
+        resolve('{ "error": "Question not available, check the inserted id." }');
       } else {
         resolve(new Question(row.id, row.text, row.email, row.authorId, row.date));
       }
