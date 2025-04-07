@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 
-function FormAnswer() {
+function AnswerForm() {
     // Each form field should be controlled by a state variable
     const [text, setText] = useState("");
     const [email, setEmail] = useState("");
@@ -39,4 +39,4 @@ function FormAnswer() {
     );
 }
 
-export default FormAnswer;
+export default AnswerForm;

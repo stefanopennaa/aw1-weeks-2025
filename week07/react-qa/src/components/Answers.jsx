@@ -1,6 +1,6 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Row, Col, Table, Button } from "react-bootstrap";
-import FormAnswer from "./FormAnswer";
+import AnswerForm from "./AnswerForm";
 
 function Answers(props) {
   return (
@@ -34,7 +34,7 @@ function AnswerTable(props) {
           {props.answers.map((ans) => <AnswerRow key={ans.id} answer={ans} />)}
         </tbody>
       </Table>
-      <FormAnswer />
+      <AnswerForm />
     </>
   );
 }
