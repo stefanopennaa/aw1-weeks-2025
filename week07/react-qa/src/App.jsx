@@ -49,12 +49,31 @@ function App() {
     });
   }
 
+  const updateAnswer = (answer) => {
+    setAnswers((prevAnswers) => {
+      const updatedAnswers = prevAnswers.map((ans) => {
+        if (ans.id === answer.id) {
+          return new Answer(
+            ans.id,
+            answer.text,
+            answer.email,
+            ans.userId,
+            answer.date,
+            ans.score
+          );
+        }
+        return ans;
+      });
+      return updatedAnswers;
+    });
+  }
+
   return (
     <>
       <NavHeader questionNum={question.id} />
       <Container fluid className="mt-3">
         <QuestionDescription question={question} />
-        <Answers answers={answers} voteUp={voteUp} addAnswer={addAnswer} />
+        <Answers answers={answers} voteUp={voteUp} addAnswer={addAnswer} updateAnswer={updateAnswer} />
       </Container>
     </>
   )

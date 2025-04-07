@@ -5,6 +5,12 @@ import { useState } from "react";
 
 function Answers(props) {
   const [mode, setMode] = useState("view");
+  const [editableAnswer, setEditableAnswer] = useState();
+
+  const handleEdit = (answer) => {
+    setEditableAnswer(answer);
+    setMode("edit");
+  }
 
   return (
     <>
@@ -13,9 +19,10 @@ function Answers(props) {
       </Row>
       <Row>
         <Col lg={10} className="mx-auto">
-          <AnswerTable answers={props.answers} voteUp={props.voteUp} />
-          {mode === "view" && <Button variant="primary" onClick={() => setMode("add")}>Add Answer</Button>}
-          {mode === "add" && <AnswerForm addAnswer={(answer) => { props.addAnswer(answer); setMode("view"); }} cancel={() => setMode("view")} />}
+          <AnswerTable answers={props.answers} voteUp={props.voteUp} handleEdit={handleEdit} />
+          {mode === "view" && <Button variant="success" onClick={() => setMode("add")}>Submit a new answer</Button>}
+          {mode === "add" && <AnswerForm addAnswer={(answer) => { props.addAnswer(answer); setMode("view"); }} cancel={() => setMode("view")} mode={mode} />}
+          {mode === "edit" && <AnswerForm key={editableAnswer.id} answer={editableAnswer} updateAnswer={(answer) => { props.updateAnswer(answer); setMode("view"); }} cancel={() => setMode("view")} mode={mode} />}
         </Col>
       </Row>
     </>
@@ -23,6 +30,26 @@ function Answers(props) {
 }
 
 function AnswerTable(props) {
+  const [sortOrder, setSortOrder] = useState();
+
+  const sortedAnswers = [...props.answers];
+  if (sortOrder === "asc") {
+    sortedAnswers.sort((a, b) => a.score - b.score);
+  }
+  else if (sortOrder === "desc") {
+    sortedAnswers.sort((a, b) => b.score - a.score);
+  }
+
+  const handleSort = () => {
+    if (sortOrder === "asc") {
+      setSortOrder("desc");
+    } else if (sortOrder === "desc") {
+      setSortOrder("asc");
+    } else {
+      setSortOrder("asc");
+    }
+  }
+
   return (
     <Table striped>
       <thead>
@@ -30,12 +57,12 @@ function AnswerTable(props) {
           <th>Date</th>
           <th>Text</th>
           <th>Author</th>
-          <th>Score</th>
+          <th>Score<Button variant="link" className="text-dark" onClick={() => handleSort()}><i className="bi bi-funnel"></i></Button></th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        {props.answers.map((ans) => <AnswerRow key={ans.id} answer={ans} voteUp={props.voteUp} />)}
+        {sortedAnswers.map((ans) => <AnswerRow key={ans.id} answer={ans} voteUp={props.voteUp} handleEdit={props.handleEdit} />)}
       </tbody>
     </Table>
   );
@@ -43,7 +70,7 @@ function AnswerTable(props) {
 
 function AnswerRow(props) {
   return (
-    <tr><AnswerData answer={props.answer} /><AnswerAction answer={props.answer} voteUp={props.voteUp} /></tr>
+    <tr><AnswerData answer={props.answer} /><AnswerAction answer={props.answer} voteUp={props.voteUp} handleEdit={props.handleEdit} /></tr>
   );
 }
 
@@ -62,7 +89,7 @@ function AnswerAction(props) {
   return (
     <td>
       <Button variant="warning" onClick={() => props.voteUp(props.answer.id)}><i className="bi bi-arrow-up" /></Button>
-      <Button variant="primary" className="mx-1"><i className="bi bi-pencil-square" /></Button>
+      <Button variant="primary" onClick={() => props.handleEdit(props.answer)} className="mx-1"><i className="bi bi-pencil-square" /></Button>
       <Button variant="danger"><i className="bi bi-trash" /></Button>
     </td>
   );
