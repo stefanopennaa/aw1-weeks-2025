@@ -10,7 +10,7 @@ function Answers(props) {
       </Row>
       <Row>
         <Col lg={10} className="mx-auto">
-          <AnswerTable answers={props.answers} />
+          <AnswerTable answers={props.answers} voteUp={props.voteUp} />
         </Col>
       </Row>
     </>
@@ -31,7 +31,7 @@ function AnswerTable(props) {
           </tr>
         </thead>
         <tbody>
-          {props.answers.map((ans) => <AnswerRow key={ans.id} answer={ans} />)}
+          {props.answers.map((ans) => <AnswerRow key={ans.id} answer={ans} voteUp={props.voteUp} />)}
         </tbody>
       </Table>
       <AnswerForm />
@@ -41,7 +41,7 @@ function AnswerTable(props) {
 
 function AnswerRow(props) {
   return (
-    <tr><AnswerData answer={props.answer} /><AnswerAction /></tr>
+    <tr><AnswerData answer={props.answer} /><AnswerAction answer={props.answer} voteUp={props.voteUp} /></tr>
   );
 }
 
@@ -56,10 +56,10 @@ function AnswerData(props) {
   );
 }
 
-function AnswerAction() {
+function AnswerAction(props) {
   return (
     <td>
-      <Button variant="warning"><i className="bi bi-arrow-up" /></Button>
+      <Button variant="warning" onClick={() => props.voteUp(props.answer.id)}><i className="bi bi-arrow-up" /></Button>
       <Button variant="primary" className="mx-1"><i className="bi bi-pencil-square" /></Button>
       <Button variant="danger"><i className="bi bi-trash" /></Button>
     </td>

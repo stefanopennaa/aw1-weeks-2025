@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 import { Container } from "react-bootstrap";
 
-import { Question } from "./models/QAModels.mjs";
+import { Answer, Question } from "./models/QAModels.mjs";
 import NavHeader from "./components/NavHeader";
 import QuestionDescription from "./components/QuestionDescription";
 import Answers from "./components/Answers";
@@ -12,15 +12,34 @@ fakeQuestion.init();
 const fakeAnswers = fakeQuestion.getAnswers();
 
 function App() {
-    const [question, setQuestion] = useState(fakeQuestion);
-    const [answers, setAnswers] = useState(fakeAnswers);
+  const [question, setQuestion] = useState(fakeQuestion);
+  const [answers, setAnswers] = useState(fakeAnswers);
+
+  const voteUp = (answerId) => {
+    setAnswers((prevAnswers) => {
+      const updatedAnswers = prevAnswers.map((ans) => {
+        if (ans.id === answerId) {
+          return new Answer(
+            ans.id,
+            ans.text,
+            ans.email,
+            ans.userId,
+            ans.date,
+            ans.score + 1
+          );
+        }
+        return ans;
+      });
+      return updatedAnswers;
+    });
+  }
 
   return (
     <>
       <NavHeader questionNum={question.id} />
       <Container fluid className="mt-3">
         <QuestionDescription question={question} />
-        <Answers answers={answers} />
+        <Answers answers={answers} voteUp={voteUp} />
       </Container>
     </>
   )
