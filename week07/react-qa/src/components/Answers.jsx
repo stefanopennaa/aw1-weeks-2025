@@ -1,8 +1,11 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Row, Col, Table, Button } from "react-bootstrap";
 import AnswerForm from "./AnswerForm";
+import { useState } from "react";
 
 function Answers(props) {
+  const [mode, setMode] = useState("view");
+
   return (
     <>
       <Row>
@@ -11,7 +14,8 @@ function Answers(props) {
       <Row>
         <Col lg={10} className="mx-auto">
           <AnswerTable answers={props.answers} voteUp={props.voteUp} />
-          <AnswerForm addAnswer={props.addAnswer} />
+          {mode === "view" && <Button variant="primary" onClick={() => setMode("add")}>Add Answer</Button>}
+          {mode === "add" && <AnswerForm addAnswer={(answer) => { props.addAnswer(answer); setMode("view"); }} cancel={() => setMode("view")} />}
         </Col>
       </Row>
     </>

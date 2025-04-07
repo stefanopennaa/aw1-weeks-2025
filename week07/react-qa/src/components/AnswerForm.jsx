@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
+import dayjs from "dayjs";
 
 function AnswerForm(props) {
     // Each form field should be controlled by a state variable
     const [text, setText] = useState("");
     const [email, setEmail] = useState("");
-    const [date, setDate] = useState("");
+    const [date, setDate] = useState(dayjs().format("YYYY-MM-DD")); // Set the default date to today
 
     // Form submission handler
     const handleSubmit = (event) => {
@@ -24,7 +25,9 @@ function AnswerForm(props) {
         // Reset the form fields using the state variables
         setText("");
         setEmail("");
-        setDate("");
+        setDate(dayjs().format("YYYY-MM-DD"));
+        // Call the cancel function passed as a prop
+        props.cancel();
     }
 
     return (
