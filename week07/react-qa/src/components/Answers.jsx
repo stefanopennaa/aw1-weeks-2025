@@ -11,6 +11,7 @@ function Answers(props) {
       <Row>
         <Col lg={10} className="mx-auto">
           <AnswerTable answers={props.answers} voteUp={props.voteUp} />
+          <AnswerForm addAnswer={props.addAnswer} />
         </Col>
       </Row>
     </>
@@ -19,23 +20,20 @@ function Answers(props) {
 
 function AnswerTable(props) {
   return (
-    <>
-      <Table striped>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Text</th>
-            <th>Author</th>
-            <th>Score</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {props.answers.map((ans) => <AnswerRow key={ans.id} answer={ans} voteUp={props.voteUp} />)}
-        </tbody>
-      </Table>
-      <AnswerForm />
-    </>
+    <Table striped>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Text</th>
+          <th>Author</th>
+          <th>Score</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {props.answers.map((ans) => <AnswerRow key={ans.id} answer={ans} voteUp={props.voteUp} />)}
+      </tbody>
+    </Table>
   );
 }
 

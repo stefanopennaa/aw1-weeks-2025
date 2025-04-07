@@ -34,12 +34,27 @@ function App() {
     });
   }
 
+  const addAnswer = (answer) => {
+    setAnswers((prevAnswers) => {
+      const newId = prevAnswers.length > 0 ? Math.max(...prevAnswers.map(ans => ans.id)) + 1 : 1; // TODO: generate a unique id from the API server
+      const userId = 1; // TODO: get the userId from the context or props
+      const newAnswer = new Answer(
+        newId,
+        answer.text,
+        answer.email,
+        userId,
+        answer.date
+      );
+      return [...prevAnswers, newAnswer];
+    });
+  }
+
   return (
     <>
       <NavHeader questionNum={question.id} />
       <Container fluid className="mt-3">
         <QuestionDescription question={question} />
-        <Answers answers={answers} voteUp={voteUp} />
+        <Answers answers={answers} voteUp={voteUp} addAnswer={addAnswer} />
       </Container>
     </>
   )

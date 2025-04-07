@@ -1,19 +1,27 @@
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 
-function AnswerForm() {
+function AnswerForm(props) {
     // Each form field should be controlled by a state variable
     const [text, setText] = useState("");
     const [email, setEmail] = useState("");
     const [date, setDate] = useState("");
 
     // Form submission handler
-    const handleSubmit = () => {
-        // something
+    const handleSubmit = (event) => {
+        // Prevent the default form submission behavior
+        event.preventDefault();
+        // Create a new answer object (what is the new id?)
+        const answer = { text, email, date };
+        // TODO: fields validation
+        props.addAnswer(answer);
     }
 
     // Form reset handler
-    const handleReset = () => {
+    const handleReset = (event) => {
+        // Prevent the default form reset behavior
+        event.preventDefault();
+        // Reset the form fields using the state variables
         setText("");
         setEmail("");
         setDate("");
