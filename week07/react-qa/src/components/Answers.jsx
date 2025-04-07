@@ -1,48 +1,52 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Row, Col, Table, Button } from "react-bootstrap";
+import FormAnswer from "./FormAnswer";
 
-function Answers (props) {
-  return(
+function Answers(props) {
+  return (
     <>
-    <Row>
-      <Col as="h2">Answers:</Col>
-    </Row>
-    <Row>
-      <Col lg={10} className="mx-auto">
-        <AnswerTable answers={props.answers} />
-      </Col>
-    </Row>
+      <Row>
+        <Col as="h2">Answers:</Col>
+      </Row>
+      <Row>
+        <Col lg={10} className="mx-auto">
+          <AnswerTable answers={props.answers} />
+        </Col>
+      </Row>
     </>
   );
 }
 
-function AnswerTable (props) {
+function AnswerTable(props) {
   return (
-    <Table striped>
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Text</th>
-          <th>Author</th>
-          <th>Score</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        { props.answers.map((ans) => <AnswerRow key={ans.id} answer={ans} />) }
-      </tbody>
-    </Table>
+    <>
+      <Table striped>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Text</th>
+            <th>Author</th>
+            <th>Score</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {props.answers.map((ans) => <AnswerRow key={ans.id} answer={ans} />)}
+        </tbody>
+      </Table>
+      <FormAnswer />
+    </>
   );
 }
 
 function AnswerRow(props) {
-  return(
+  return (
     <tr><AnswerData answer={props.answer} /><AnswerAction /></tr>
   );
 }
 
 function AnswerData(props) {
-  return(
+  return (
     <>
       <td>{props.answer.date.format("YYYY-MM-DD")}</td>
       <td>{props.answer.text}</td>
@@ -53,10 +57,10 @@ function AnswerData(props) {
 }
 
 function AnswerAction() {
-  return(
+  return (
     <td>
       <Button variant="warning"><i className="bi bi-arrow-up" /></Button>
-      <Button variant="primary" className="mx-1"><i className="bi bi-pencil-square" /></Button> 
+      <Button variant="primary" className="mx-1"><i className="bi bi-pencil-square" /></Button>
       <Button variant="danger"><i className="bi bi-trash" /></Button>
     </td>
   );
