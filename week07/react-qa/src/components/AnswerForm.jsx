@@ -18,8 +18,11 @@ function AnswerForm(props) {
         if (props.mode === "edit") { // edit mode
             props.updateAnswer({ id: props.answer.id, ...answer });
         }
-        else { // add mode
+        else if (props.mode === "add") { // add mode
             props.addAnswer(answer);
+        }
+        else if (props.mode === "delete") { // delete mode
+            props.deleteAnswer(props.answerId);
         }
     }
 
@@ -33,20 +36,23 @@ function AnswerForm(props) {
 
     return (
         <Form onSubmit={handleSubmit} onReset={handleReset}>
-            <Form.Group className="mb-2">
-                <Form.Label>Text</Form.Label>
-                <Form.Control type="text" placeholder="Enter your answer" value={text} onChange={e => setText(e.target.value)} minLength={2} required />
-            </Form.Group>
-            <Form.Group className="mb-2">
-                <Form.Label>Email</Form.Label>
-                <Form.Control type="email" placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)} required />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label>Date</Form.Label>
-                <Form.Control type="date" value={date} onChange={e => setDate(e.target.value)} required />
-            </Form.Group>
+            {props.mode !== "delete" && <>
+                <Form.Group className="mb-2">
+                    <Form.Label>Text</Form.Label>
+                    <Form.Control type="text" placeholder="Enter your answer" value={text} onChange={e => setText(e.target.value)} minLength={2} required />
+                </Form.Group>
+                <Form.Group className="mb-2">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type="email" placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)} required />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Date</Form.Label>
+                    <Form.Control type="date" value={date} onChange={e => setDate(e.target.value)} required />
+                </Form.Group>
+            </>}
             {props.mode === "add" && <Button variant="success" type="submit" className="me-2">Submit answer</Button>}
             {props.mode === "edit" && <Button variant="primary" type="submit" className="me-2">Update answer</Button>}
+            {props.mode === "delete" && <Button variant="outline-danger" type="submit" className="me-2">Delete answer</Button>}
             <Button variant="danger" type="reset">Cancel</Button>
         </Form>
     );

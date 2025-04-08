@@ -6,10 +6,16 @@ import { useState } from "react";
 function Answers(props) {
   const [mode, setMode] = useState("view");
   const [editableAnswer, setEditableAnswer] = useState();
+  const [deleteId, setDeleteId] = useState();
 
   const handleEdit = (answer) => {
     setEditableAnswer(answer);
     setMode("edit");
+  }
+
+  const handleDelete = (answerId) => {
+    setDeleteId(answerId);
+    setMode("delete");
   }
 
   return (
@@ -19,10 +25,11 @@ function Answers(props) {
       </Row>
       <Row>
         <Col lg={10} className="mx-auto">
-          <AnswerTable answers={props.answers} voteUp={props.voteUp} handleEdit={handleEdit} />
+          <AnswerTable answers={props.answers} voteUp={props.voteUp} handleEdit={handleEdit} handleDelete={handleDelete} />
           {mode === "view" && <Button variant="success" onClick={() => setMode("add")}>Submit a new answer</Button>}
           {mode === "add" && <AnswerForm addAnswer={(answer) => { props.addAnswer(answer); setMode("view"); }} cancel={() => setMode("view")} mode={mode} />}
           {mode === "edit" && <AnswerForm key={editableAnswer.id} answer={editableAnswer} updateAnswer={(answer) => { props.updateAnswer(answer); setMode("view"); }} cancel={() => setMode("view")} mode={mode} />}
+          {mode === "delete" && <AnswerForm key={deleteId} answerId={deleteId} deleteAnswer={(answerId) => { props.deleteAnswer(answerId); setMode("view"); }} cancel={() => setMode("view")} mode={mode} />}
         </Col>
       </Row>
     </>
@@ -62,7 +69,7 @@ function AnswerTable(props) {
         </tr>
       </thead>
       <tbody>
-        {sortedAnswers.map((ans) => <AnswerRow key={ans.id} answer={ans} voteUp={props.voteUp} handleEdit={props.handleEdit} />)}
+        {sortedAnswers.map((ans) => <AnswerRow key={ans.id} answer={ans} voteUp={props.voteUp} handleEdit={props.handleEdit} handleDelete={props.handleDelete} />)}
       </tbody>
     </Table>
   );
@@ -70,7 +77,7 @@ function AnswerTable(props) {
 
 function AnswerRow(props) {
   return (
-    <tr><AnswerData answer={props.answer} /><AnswerAction answer={props.answer} voteUp={props.voteUp} handleEdit={props.handleEdit} /></tr>
+    <tr><AnswerData answer={props.answer} /><AnswerAction answer={props.answer} voteUp={props.voteUp} handleEdit={props.handleEdit} handleDelete={props.handleDelete} /></tr>
   );
 }
 
@@ -90,7 +97,7 @@ function AnswerAction(props) {
     <td>
       <Button variant="warning" onClick={() => props.voteUp(props.answer.id)}><i className="bi bi-arrow-up" /></Button>
       <Button variant="primary" onClick={() => props.handleEdit(props.answer)} className="mx-1"><i className="bi bi-pencil-square" /></Button>
-      <Button variant="danger"><i className="bi bi-trash" /></Button>
+      <Button variant="danger" onClick={() => props.handleDelete(props.answer.id)}><i className="bi bi-trash" /></Button>
     </td>
   );
 }

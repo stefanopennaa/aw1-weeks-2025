@@ -68,12 +68,19 @@ function App() {
     });
   }
 
+  const deleteAnswer = (answerId) => {
+    setAnswers((prevAnswers) => {
+      const updatedAnswers = prevAnswers.filter((ans) => ans.id !== answerId);
+      return updatedAnswers;
+    });
+  }
+
   return (
     <>
       <NavHeader questionNum={question.id} />
       <Container fluid className="mt-3">
         <QuestionDescription question={question} />
-        <Answers answers={answers} voteUp={voteUp} addAnswer={addAnswer} updateAnswer={updateAnswer} />
+        <Answers answers={answers} voteUp={voteUp} addAnswer={addAnswer} updateAnswer={updateAnswer} deleteAnswer={deleteAnswer} />
       </Container>
     </>
   )
