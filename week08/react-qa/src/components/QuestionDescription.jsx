@@ -1,5 +1,5 @@
 import { Outlet, useParams } from 'react-router';
-import { Col, Row } from 'react-bootstrap';
+import { Alert, Col, Row } from 'react-bootstrap';
 
 function QuestionDescription(props) {
   const { questionId } = useParams();
@@ -21,7 +21,8 @@ function QuestionDescription(props) {
         </Row>
         <Outlet />
       </>
-      : <p>ERROR: Domanda non trovata.</p>}</>
+      : <Alert variant='danger'>Domanda non trovata.</Alert>}
+    </>
   );
 }
 

@@ -7,7 +7,7 @@ function Questions(props) {
             <Row>
                 <Col>
                     <h1>Welcome to HeapOverrun!</h1>
-                    <p>We have {props.questions.length} questions.</p>
+                    <p>We have <strong>{props.questions.length}</strong> questions:</p>
                 </Col>
             </Row>
             <Row>

@@ -8,6 +8,7 @@ import Questions from "./components/Questions";
 import QuestionDescription from "./components/QuestionDescription";
 import Answers from "./components/Answers";
 import { AnswerForm, EditAnswerForm } from "./components/AnswerForm";
+import Alert from "react-bootstrap/Alert";
 
 const fakeQuestion = new Question(1, "Is JavaScript better than Python?", "luigi.derussis@polito.it", 1, "2025-02-28");
 fakeQuestion.init();
@@ -63,7 +64,7 @@ function App() {
           <Route path="answers/new" element={<AnswerForm addAnswer={addAnswer} />} />
           <Route path="answers/:answerId/edit" element={<EditAnswerForm editAnswer={updateAnswer} answers={answers} />} />
         </Route>
-        <Route path="*" element={<p>ERROR 404: Pagina non trovata.</p>} />
+        <Route path="*" element={<Alert variant='danger'>Pagina non trovata.</Alert>} />
       </Route>
     </Routes>
   )

@@ -61,7 +61,7 @@ function AnswerForm(props) {
         </Form.Group>
         {props.addAnswer && <Button variant="primary" type="submit">Add</Button>}
         {props.editAnswer && <Button variant="success" type="submit">Update</Button>}
-        <Link to={`/questions/${questionId}`} className="btn btn-danger">Cancel</Link>
+        <Link to={`/questions/${questionId}`} className="btn btn-danger ms-2">Cancel</Link>
       </Form>
     </>
   );
