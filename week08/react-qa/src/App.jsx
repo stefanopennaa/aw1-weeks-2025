@@ -1,10 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
-import { Container } from "react-bootstrap";
 import { Routes, Route } from "react-router";
 
 import { Question, Answer } from "./models/QAModels.mjs";
-import NavHeader from "./components/NavHeader";
+import Layout from "./components/Layout";
+import Questions from "./components/Questions";
 import QuestionDescription from "./components/QuestionDescription";
 import Answers from "./components/Answers";
 import { AnswerForm, EditAnswerForm } from "./components/AnswerForm";
@@ -54,31 +54,18 @@ function App() {
     });
   }
 
-  /* ROUTES 
-  
-    - / => list of questions
-    - /questions/:qid => question answers
-
-    - /questions/:qid/answers/new => new answer
-    - /questions/:qid/answers/:aid/edit => edit answer
-
-    - * => 404 page not found (default route)
-  
-  */
-
   return (
-    <>
-      <NavHeader />
-      <Container fluid className="mt-3">
-        <Routes>
-          <Route path="/questions/:questionId" element={<QuestionDescription questions={questions} />} >
-            <Route index element={<Answers answers={answers} voteUp={voteUp} editAnswer={updateAnswer} deleteAnswer={deleteAnswer} />} />
-            <Route path="answers/new" element={<AnswerForm addAnswer={addAnswer} />} />
-            <Route path="answers/:answerId/edit" element={<EditAnswerForm editAnswer={updateAnswer} answers={answers} />} />
-          </Route>
-        </Routes>
-      </Container>
-    </>
+    <Routes>
+      <Route path="/" element={<Layout />} >
+        <Route path="questions" element={<Questions questions={questions} />} />
+        <Route path="/questions/:questionId" element={<QuestionDescription questions={questions} />} >
+          <Route index element={<Answers answers={answers} voteUp={voteUp} editAnswer={updateAnswer} deleteAnswer={deleteAnswer} />} />
+          <Route path="answers/new" element={<AnswerForm addAnswer={addAnswer} />} />
+          <Route path="answers/:answerId/edit" element={<EditAnswerForm editAnswer={updateAnswer} answers={answers} />} />
+        </Route>
+        <Route path="*" element={<p>ERROR 404: Pagina non trovata.</p>} />
+      </Route>
+    </Routes>
   )
 
 }

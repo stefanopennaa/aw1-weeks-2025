@@ -21,7 +21,7 @@ function QuestionDescription(props) {
         </Row>
         <Outlet />
       </>
-      : <p>Domanda non trovata.</p>}</>
+      : <p>ERROR: Domanda non trovata.</p>}</>
   );
 }
 
