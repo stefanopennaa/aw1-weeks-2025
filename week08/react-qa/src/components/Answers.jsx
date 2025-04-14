@@ -1,45 +1,32 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Row, Col, Table, Button } from "react-bootstrap";
-import AnswerForm from "./AnswerForm";
+import { Link, useParams } from "react-router";
 import { useState } from "react";
 
-function Answers (props) {
-  const [mode, setMode] = useState("view");
-  const [editableAnswer, setEditableAnswer] = useState();
-
-  const handleEdit = (answer) => {
-    setEditableAnswer(answer);
-    setMode("edit");
-  }
-
-  return(
+function Answers(props) {
+  return (
     <>
-    <Row>
-      <Col as="h2">Answers:</Col>
-    </Row>
-    <Row>
-      <Col lg={10} className="mx-auto">
-        <AnswerTable answers={props.answers} voteUp={props.voteUp} handleEdit={handleEdit} deleteAnswer={props.deleteAnswer} />
-
-        { mode === "view" && <Button variant="primary" onClick={() => setMode("add")}>Add</Button>}
-
-        { mode === "add" && <AnswerForm addAnswer={(answer) => {props.addAnswer(answer); setMode("view");}} cancel={() => setMode("view")}/>}
-
-        { mode === "edit" && <AnswerForm key={editableAnswer.id} answer={editableAnswer} editAnswer={(answer) => {props.editAnswer(answer); setMode("view");}} cancel={() => setMode("view")} />}
-      </Col>
-    </Row>
+      <Row>
+        <Col as="h2">Answers:</Col>
+      </Row>
+      <Row>
+        <Col lg={10} className="mx-auto">
+          <AnswerTable answers={props.answers} voteUp={props.voteUp} deleteAnswer={props.deleteAnswer} />
+          <Link to="answers/new" className="btn btn-primary">Add</Link>
+        </Col>
+      </Row>
     </>
   );
 }
 
-function AnswerTable (props) {
+function AnswerTable(props) {
   const [sortOrder, setSortOrder] = useState("none");
 
   const sortedAnswers = [...props.answers];
-  if(sortOrder === "asc")
-    sortedAnswers.sort((a,b) => a.score - b.score);
+  if (sortOrder === "asc")
+    sortedAnswers.sort((a, b) => a.score - b.score);
   else if (sortOrder == "desc")
-    sortedAnswers.sort((a,b) => b.score - a.score);
+    sortedAnswers.sort((a, b) => b.score - a.score);
 
   const sortByScore = () => {
     setSortOrder(oldOrder => oldOrder === "asc" ? "desc" : "asc");
@@ -52,25 +39,25 @@ function AnswerTable (props) {
           <th>Date</th>
           <th>Text</th>
           <th>Author</th>
-          <th>Score <Button variant="link" className="text-black" onClick={sortByScore}><i className={sortOrder ==="asc" ? "bi bi-sort-numeric-up" : "bi bi-sort-numeric-down"}></i></Button></th>
+          <th>Score <Button variant="link" className="text-black" onClick={sortByScore}><i className={sortOrder === "asc" ? "bi bi-sort-numeric-up" : "bi bi-sort-numeric-down"}></i></Button></th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        { sortedAnswers.map((ans) => <AnswerRow key={ans.id} answer={ans} voteUp={props.voteUp} handleEdit={props.handleEdit} deleteAnswer={props.deleteAnswer} />) }
+        {sortedAnswers.map((ans) => <AnswerRow key={ans.id} answer={ans} voteUp={props.voteUp} deleteAnswer={props.deleteAnswer} />)}
       </tbody>
     </Table>
   );
 }
 
 function AnswerRow(props) {
-  return(
+  return (
     <tr><AnswerData answer={props.answer} /><AnswerAction {...props} /></tr>
   );
 }
 
 function AnswerData(props) {
-  return(
+  return (
     <>
       <td>{props.answer.date.format("YYYY-MM-DD")}</td>
       <td>{props.answer.text}</td>
@@ -81,10 +68,10 @@ function AnswerData(props) {
 }
 
 function AnswerAction(props) {
-  return(
+  return (
     <td>
       <Button variant="warning" onClick={() => props.voteUp(props.answer.id)}><i className="bi bi-arrow-up" /></Button>
-      <Button variant="primary" className="mx-1" onClick={() => props.handleEdit(props.answer)}><i className="bi bi-pencil-square" /></Button> 
+      <Link to={`answers/${props.answer.id}/edit`} className="btn btn-primary mx-1"><i className="bi bi-pencil-square" /></Link>
       <Button variant="danger"><i className="bi bi-trash" onClick={() => props.deleteAnswer(props.answer.id)} /></Button>
     </td>
   );

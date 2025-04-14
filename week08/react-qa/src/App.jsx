@@ -7,6 +7,7 @@ import { Question, Answer } from "./models/QAModels.mjs";
 import NavHeader from "./components/NavHeader";
 import QuestionDescription from "./components/QuestionDescription";
 import Answers from "./components/Answers";
+import { AnswerForm, EditAnswerForm } from "./components/AnswerForm";
 
 const fakeQuestion = new Question(1, "Is JavaScript better than Python?", "luigi.derussis@polito.it", 1, "2025-02-28");
 fakeQuestion.init();
@@ -71,12 +72,13 @@ function App() {
       <Container fluid className="mt-3">
         <Routes>
           <Route path="/questions/:questionId" element={<QuestionDescription questions={questions} />} >
-            <Route index element={<Answers answers={answers} voteUp={voteUp} addAnswer={addAnswer} editAnswer={updateAnswer} deleteAnswer={deleteAnswer} />} />
+            <Route index element={<Answers answers={answers} voteUp={voteUp} editAnswer={updateAnswer} deleteAnswer={deleteAnswer} />} />
+            <Route path="answers/new" element={<AnswerForm addAnswer={addAnswer} />} />
+            <Route path="answers/:answerId/edit" element={<EditAnswerForm editAnswer={updateAnswer} answers={answers} />} />
           </Route>
         </Routes>
       </Container>
     </>
-
   )
 
 }
