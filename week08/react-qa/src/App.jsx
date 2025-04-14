@@ -13,7 +13,7 @@ fakeQuestion.init();
 const fakeAnswers = fakeQuestion.getAnswers();
 
 function App() {
-  const [question, setQuestion] = useState(fakeQuestion);
+  const [questions, setQuestions] = useState([fakeQuestion]);
   const [answers, setAnswers] = useState(fakeAnswers);
 
   const voteUp = (answerId) => {
@@ -53,14 +53,30 @@ function App() {
     });
   }
 
+  /* ROUTES 
+  
+    - / => list of questions
+    - /questions/:qid => question answers
+
+    - /questions/:qid/answers/new => new answer
+    - /questions/:qid/answers/:aid/edit => edit answer
+
+    - * => 404 page not found (default route)
+  
+  */
+
   return (
     <>
-      <NavHeader questionNum={question.id} />
+      <NavHeader />
       <Container fluid className="mt-3">
-        <QuestionDescription question={question} />
-        <Answers answers={answers} voteUp={voteUp} addAnswer={addAnswer} editAnswer={updateAnswer} deleteAnswer={deleteAnswer} />
+        <Routes>
+          <Route path="/questions/:questionId" element={<QuestionDescription questions={questions} />} >
+            <Route index element={<Answers answers={answers} voteUp={voteUp} addAnswer={addAnswer} editAnswer={updateAnswer} deleteAnswer={deleteAnswer} />} />
+          </Route>
+        </Routes>
       </Container>
     </>
+
   )
 
 }
