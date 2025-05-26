@@ -46,7 +46,7 @@ passport.deserializeUser(function (user, cb) {
 });
 
 // middleware: is the user logged in?
-const isLoggedIn = (req, res, next) => {
+const isLoggedIn = (req, res, next) => { // the user must be logged in (isLoggedIn middleware)
   if (req.isAuthenticated()) {
     return next();
   }
@@ -96,7 +96,7 @@ app.get('/api/questions/:id/answers', async (req, res) => {
 });
 
 // POST /api/questions/<id>/answers
-app.post('/api/questions/:id/answers', isLoggedIn, [
+app.post('/api/questions/:id/answers', isLoggedIn, [ // the user must be logged in (isLoggedIn middleware)
   check('text').notEmpty(),
   check('email').isEmail(),
   check('score').isNumeric(),
@@ -124,7 +124,7 @@ app.post('/api/questions/:id/answers', isLoggedIn, [
 });
 
 // PUT /api/answers/<id>
-app.put('/api/answers/:id', isLoggedIn, [
+app.put('/api/answers/:id', isLoggedIn, [ // the user must be logged in (isLoggedIn middleware)
   check('text').notEmpty(),
   check('email').isEmail(),
   check('score').isNumeric(),
@@ -151,7 +151,7 @@ app.put('/api/answers/:id', isLoggedIn, [
 });
 
 // POST /api/answers/<id>/vote
-app.post('/api/answers/:id/vote', isLoggedIn, [
+app.post('/api/answers/:id/vote', isLoggedIn, [ // the user must be logged in (isLoggedIn middleware)
   check('vote').notEmpty()
 ], async (req, res) => {
   const errors = validationResult(req);

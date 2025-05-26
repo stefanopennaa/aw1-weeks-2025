@@ -6,7 +6,7 @@ const SERVER_URL = "http://localhost:3001";
 // GET /api/questions
 const getQuestions = async () => {
   const response = await fetch(SERVER_URL + "/api/questions");
-  if(response.ok) {
+  if (response.ok) {
     const questionsJson = await response.json();
     return questionsJson.map(q => new Question(q.id, q.text, q.email, q.userId, q.date));
   }
@@ -18,7 +18,7 @@ const getQuestions = async () => {
 // GET /api/questions/<id>/answers
 const getAnswers = async (questionId) => {
   const response = await fetch(`${SERVER_URL}/api/questions/${questionId}/answers`);
-  if(response.ok) {
+  if (response.ok) {
     const answersJson = await response.json();
     return answersJson.map(ans => new Answer(ans.id, ans.text, ans.email, ans.userId, ans.date, ans.score));
   }
@@ -31,13 +31,13 @@ const getAnswers = async (questionId) => {
 const voteUp = async (answerId) => {
   const response = await fetch(`${SERVER_URL}/api/answers/${answerId}/vote`, {
     method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({vote: "up"}),
-    credentials: 'include'
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ vote: "up" }),
+    credentials: 'include' // NEW: if the API must be called with credentials (authenticated users) --> credentials: 'include'
   });
 
   // TODO: migliorare gestione errori
-  if(!response.ok) {
+  if (!response.ok) {
     const errMessage = await response.json();
     throw errMessage;
   }
@@ -49,15 +49,15 @@ const voteUp = async (answerId) => {
 const addAnswer = async (answer, questionId) => {
   const response = await fetch(`${SERVER_URL}/api/questions/${questionId}/answers`, {
     method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({text: answer.text, email: answer.email, userId: answer.userId, score: 0, date: answer.date}),
-    credentials: 'include'
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text: answer.text, email: answer.email, userId: answer.userId, score: 0, date: answer.date }),
+    credentials: 'include' // NEW: if the API must be called with credentials (authenticated users) --> credentials: 'include'
   });
 
   // TODO: migliorare gestione errori
-  if(!response.ok) {
+  if (!response.ok) {
     let errMessage = await response.json();
-    if(response.status === 422)
+    if (response.status === 422)
       errMessage = `${errMessage.errors[0].msg} for ${errMessage.errors[0].path}.`
     else
       errMessage = errMessage.error;
@@ -71,15 +71,15 @@ const addAnswer = async (answer, questionId) => {
 const updateAnswer = async (answer) => {
   const response = await fetch(`${SERVER_URL}/api/answers/${answer.id}`, {
     method: "PUT",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({text: answer.text, email: answer.email, userId: answer.userId, score: answer.score, date: answer.date}),
-    credentials: 'include'
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text: answer.text, email: answer.email, userId: answer.userId, score: answer.score, date: answer.date }),
+    credentials: 'include' // NEW: if the API must be called with credentials (authenticated users) --> credentials: 'include'
   });
 
   // TODO: migliorare gestione errori
-  if(!response.ok) {
+  if (!response.ok) {
     let errMessage = await response.json();
-    if(response.status === 422)
+    if (response.status === 422)
       errMessage = `${errMessage.errors[0].msg} for ${errMessage.errors[0].path}.`
     else
       errMessage = errMessage.error;
@@ -94,10 +94,10 @@ const logIn = async (credentials) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    credentials: 'include',
+    credentials: 'include', // NEW: if the API must be called with credentials (authenticated users) --> credentials: 'include'
     body: JSON.stringify(credentials),
   });
-  if(response.ok) {
+  if (response.ok) {
     const user = await response.json();
     return user;
   }
@@ -109,7 +109,7 @@ const logIn = async (credentials) => {
 
 const getUserInfo = async () => {
   const response = await fetch(SERVER_URL + '/api/sessions/current', {
-    credentials: 'include',
+    credentials: 'include', // NEW: if the API must be called with credentials (authenticated users) --> credentials: 'include'
   });
   const user = await response.json();
   if (response.ok) {
@@ -119,10 +119,10 @@ const getUserInfo = async () => {
   }
 };
 
-const logOut = async() => {
+const logOut = async () => {
   const response = await fetch(SERVER_URL + '/api/sessions/current', {
     method: 'DELETE',
-    credentials: 'include'
+    credentials: 'include' // NEW: if the API must be called with credentials (authenticated users) --> credentials: 'include'
   });
   if (response.ok)
     return null;
