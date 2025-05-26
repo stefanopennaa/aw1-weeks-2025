@@ -3,7 +3,7 @@ import { Form, Button, Row, Col, Alert } from 'react-bootstrap';
 import { Link } from 'react-router';
 
 function LoginForm(props) {
-    const [state, formAction, isPending] = useActionState(loginFunction, {username: '', password: ''});
+    const [state, formAction, isPending] = useActionState(loginFunction, { username: '', password: '' });
 
     async function loginFunction(prevState, formData) {
         const credentials = {
@@ -21,7 +21,7 @@ function LoginForm(props) {
 
     return (
         <>
-            { isPending && <Alert variant="warning">Please, wait for the server's response...</Alert> }
+            {isPending && <Alert variant="warning">Please, wait for the server's response...</Alert>}
             <Row>
                 <Col md={6}>
                     <Form action={formAction}>
@@ -47,7 +47,7 @@ function LoginForm(props) {
 }
 
 function LogoutButton(props) {
-  return <Button variant='outline-light' onClick={props.logout}>Logout</Button>;
+    return <Button variant='outline-light' onClick={props.logout}>Logout</Button>;
 }
 
 export { LoginForm, LogoutButton };

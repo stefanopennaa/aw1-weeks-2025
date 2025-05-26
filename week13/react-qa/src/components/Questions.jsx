@@ -14,7 +14,7 @@ function Questions(props) {
       <Row>
         <dl>
           {
-            props.questions.map((q) => <QuestionItem question={q} key={q.id}/>)
+            props.questions.map((q) => <QuestionItem question={q} key={q.id} />)
           }
         </dl>
       </Row>

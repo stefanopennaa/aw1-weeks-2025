@@ -88,6 +88,7 @@ const updateAnswer = async (answer) => {
   else return null;
 }
 
+// NEW: login
 const logIn = async (credentials) => {
   const response = await fetch(SERVER_URL + '/api/sessions', {
     method: 'POST',
@@ -107,6 +108,7 @@ const logIn = async (credentials) => {
   }
 };
 
+// NEW: getUserInfo
 const getUserInfo = async () => {
   const response = await fetch(SERVER_URL + '/api/sessions/current', {
     credentials: 'include', // NEW: if the API must be called with credentials (authenticated users) --> credentials: 'include'
@@ -119,6 +121,7 @@ const getUserInfo = async () => {
   }
 };
 
+// NEW: logout
 const logOut = async () => {
   const response = await fetch(SERVER_URL + '/api/sessions/current', {
     method: 'DELETE',
