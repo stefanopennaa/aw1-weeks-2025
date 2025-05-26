@@ -28,13 +28,13 @@ export const listQuestions = () => {
 
 // get a question given its id
 export const getQuestion = (id) => {
-  return new Promise ((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const sql = 'SELECT question.*, user.email FROM question JOIN user ON question.authorId = user.id WHERE question.id = ?';
     db.get(sql, [id], (err, row) => {
       if (err) {
         reject(err);
       } else if (row === undefined) {
-        resolve({error: "Question not available, check the inserted id."});
+        resolve({ error: "Question not available, check the inserted id." });
       } else {
         resolve(new Question(row.id, row.text, row.email, row.authorId, row.date));
       }
@@ -46,10 +46,10 @@ export const getQuestion = (id) => {
 export const addQuestion = (question) => {
   return new Promise((resolve, reject) => {
     const sql = 'INSERT INTO question(text, authorId, date) VALUES (?,?,?)';
-    db.run(sql, [question.text, question.userId, question.date], function(err) {
+    db.run(sql, [question.text, question.userId, question.date], function (err) {
       if (err)
         reject(err);
-      else 
+      else
         resolve(this.lastID);
     });
   });
@@ -59,7 +59,7 @@ export const addQuestion = (question) => {
 
 // get all the answer of a given question
 export const listAnswersOf = (questionId) => {
-  return new Promise ((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const sql = 'SELECT answer.*, user.email FROM answer JOIN user ON answer.authorId = user.id WHERE answer.questionId = ?';
     db.all(sql, [questionId], (err, rows) => {
       if (err) {
@@ -103,7 +103,7 @@ export const voteAnswer = (answerId, vote) => {
   return new Promise((resolve, reject) => {
     const sql = 'UPDATE answer SET score = score + ? WHERE id= ?';
     const delta = vote === 'up' ? 1 : -1;
-    db.run(sql, [delta, answerId], function(err) {
+    db.run(sql, [delta, answerId], function (err) {
       if (err)
         reject(err);
       else
@@ -112,25 +112,26 @@ export const voteAnswer = (answerId, vote) => {
   });
 }
 
+// NEW: authentication --> try to get the user with given username and password
 export const getUser = (email, password) => {
   return new Promise((resolve, reject) => {
     const sql = 'SELECT * FROM user WHERE email = ?';
     db.get(sql, [email], (err, row) => {
-      if (err) { 
-        reject(err); 
+      if (err) {
+        reject(err);
       }
-      else if (row === undefined) { 
-        resolve(false); 
+      else if (row === undefined) { // not found user
+        resolve(false);
       }
       else {
-        const user = {id: row.id, username: row.email, name: row.name};
-        
-        crypto.scrypt(password, row.salt, 16, function(err, hashedPassword) {
+        const user = { id: row.id, username: row.email, name: row.name };
+        // is the password correct? --> use of crypto hashing
+        crypto.scrypt(password, row.salt, 16, function (err, hashedPassword) {
           if (err) reject(err);
-          if(!crypto.timingSafeEqual(Buffer.from(row.password, 'hex'), hashedPassword))
-            resolve(false);
+          if (!crypto.timingSafeEqual(Buffer.from(row.password, 'hex'), hashedPassword))
+            resolve(false); // wrong password
           else
-            resolve(user);
+            resolve(user); // right password --> return the user
         });
       }
     });
