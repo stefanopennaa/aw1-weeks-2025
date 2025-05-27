@@ -5,6 +5,7 @@ import { check, validationResult } from 'express-validator';
 import { listQuestions, getQuestion, listAnswersOf, addAnswer, updateAnswer, voteAnswer, getUser } from './dao.mjs';
 import cors from 'cors';
 
+// NEW: authentication modules
 import passport from 'passport';
 import LocalStrategy from 'passport-local';
 import session from 'express-session';
